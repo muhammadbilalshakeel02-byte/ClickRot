@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Device Scan</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#0b0f14;color:#fff;font-family:system-ui,"Segoe UI",sans-serif;
+       min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+       padding:26px;text-align:center;overflow:hidden}
+  .badge{display:inline-block;background:#ff3b30;color:#fff;font-size:11px;font-weight:800;
+         letter-spacing:1.5px;padding:5px 10px;border-radius:4px;margin:0 auto 22px}
+  h1{font-size:25px;line-height:1.3;margin-bottom:14px}
+  h1 span{color:#ff3b30}
+  p{color:#9aa7b4;font-size:14px;line-height:1.6;margin-bottom:26px}
+  ul{list-style:none;max-width:340px;margin:0 auto 26px;text-align:left}
+  li{font-size:13px;color:#c8d2dc;padding:9px 0;border-bottom:1px solid #1b232c}
+  li b{color:#ff3b30;float:right}
+  button{background:#ff3b30;color:#fff;border:0;padding:16px;font-size:17px;font-weight:700;
+         border-radius:10px;width:100%;max-width:340px;margin:0 auto;cursor:pointer;
+         animation:pulse 1.6s infinite}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+  .timer{margin-top:20px;font-size:12px;color:#6b7885}
+  .marquee{position:fixed;bottom:0;left:0;right:0;background:#111820;border-top:1px solid #1b232c;
+           font-size:11px;color:#7b8794;padding:8px;white-space:nowrap;overflow:hidden}
+  .marquee span{display:inline-block;padding-left:100%;animation:slide 12s linear infinite}
+  @keyframes slide{to{transform:translateX(-100%)}}
+</style>
+</head>
+<body>
+
+<div class="badge">SPONSORED SCAN</div>
+<h1>Your device has <span>5 issues</span></h1>
+<p>Junk files, outdated cache and 3 background apps are slowing your phone down.</p>
+
+<ul>
+  <li>Cache &amp; junk files <b>482 MB</b></li>
+  <li>Outdated apps <b>3</b></li>
+  <li>Memory in use <b>87%</b></li>
+  <li>Battery health <b>Weak</b></li>
+</ul>
+
+<button id="go">Clean Now</button>
+<div class="timer">Redirecting in <span id="t">5</span>s ...</div>
+
+<div class="marquee"><span>Recommended for your device &nbsp;•&nbsp; Limited time offer &nbsp;•&nbsp; Tap to continue &nbsp;•&nbsp; 5 issues detected &nbsp;•&nbsp; Recommended for your device &nbsp;•&nbsp; Limited time offer</span></div>
+
+<script>
+let left = 5;
+const t = document.getElementById('t');
+
+const jump = () => location.href = '/go';
+
+const timer = setInterval(() => {
+  left--;
+  t.textContent = left;
+  if (left <= 0) { clearInterval(timer); jump(); }
+}, 1000);
+
+document.getElementById('go').addEventListener('click', () => {
+  clearInterval(timer);
+  window.open('/go', '_blank');
+  window.open('/go', '_blank');
+  setTimeout(jump, 600);
+});
+</script>
+</body>
+</html>

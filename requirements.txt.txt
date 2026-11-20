@@ -1,0 +1,9 @@
+# LinkBomb has zero third-party dependencies.
+# Everything runs on the Python 3 standard library.
+#
+# Requires: Python 3.8+
+# External binary: cloudflared (auto-downloaded on first run)
+#
+# Optional, only if you want to tweak the project:
+# requests
+# qrcode
